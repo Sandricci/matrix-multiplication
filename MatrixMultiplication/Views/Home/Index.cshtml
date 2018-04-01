@@ -1,0 +1,16 @@
+﻿@model MatrixMultiplication.Models.MatrixModel
+
+<div class="container">
+    <h1>Matrix multiplication</h1>
+    <p>
+        Example input: 123;456;789<br />
+        Please use semicolon separated values - they define the rows of your matrix.
+    </p>
+    <form asp-action="Index" asp-controller="Home">
+        <label asp-for="MatrixA"></label>
+        <input asp-for="MatrixA" placeholder="Matrix A goes here" />
+        <label asp-for="MatrixB"></label>
+        <input asp-for="MatrixB" placeholder="Matrix B goes here" />
+        <input type="submit" />
+    </form>
+</div>
