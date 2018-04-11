@@ -38,7 +38,7 @@ namespace MatrixMultiplication.Controllers
             }
 
             var matrixA = Matrix.Random(model.MatrixAWidth, model.MatrixAHeight, model.Scalar);
-            var matrixB = Matrix.Random(model.MatrixAWidth, model.MatrixAHeight, model.Scalar);
+            var matrixB = Matrix.Random(model.MatrixBWidth, model.MatrixBHeight, model.Scalar);
             model.Matrix1 = matrixA.ToString();
             model.Matrix2 = matrixB.ToString();
 

@@ -79,9 +79,9 @@ namespace MatrixMultiplication.Business
         {
             var valueStorage = new double[width, height];
 
-            for (int y = 0; y < width; y++)
+            for (int x = 0; x < width; x++)
             {
-                for (int x = 0; x < height; x++)
+                for (int y = 0; y < height; y++)
                 {
                     valueStorage[x,y] = RandomNumberGenerator.NextDouble() * scalar;
                 }
