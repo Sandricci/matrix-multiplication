@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using MatrixMultiplication.Business;
 using Microsoft.AspNetCore.Mvc;
 using MatrixMultiplication.Models;
 
@@ -13,22 +14,95 @@ namespace MatrixMultiplication.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            return View();
+            return View(new MatrixModel());
+        }
+
+        [HttpGet]
+        public IActionResult IndexSerial()
+        {
+            return View(new MatrixModel());
+        }
+
+        [HttpGet]
+        public IActionResult Random()
+        {
+            return View(new MatrixRandomModel());
         }
 
         [HttpPost]
-        public IActionResult Index(MatrixModel model)
+        public IActionResult CalculateRandom(MatrixRandomModel model)
         {
-            // get rows and cols from user input instead of init here
-            double[][] ma = MatrixModel.CreateEmptyMatrix(10, 20);
-            double[][] mb = MatrixModel.CreateEmptyMatrix(20, 10);
-            ma = MatrixModel.ParseMatrix(ma);
-            mb = MatrixModel.ParseMatrix(mb);
+            if (!ModelState.IsValid)
+            {
+                return View("Random", model);
+            }
 
-            double[][] matrixR = MatrixModel.MultiplyMatrix(ma, mb);
-            string result = MatrixModel.PrintMatrix(matrixR);
+            var matrixA = Matrix.Random(model.MatrixAWidth, model.MatrixAHeight, model.Scalar);
+            var matrixB = Matrix.Random(model.MatrixAWidth, model.MatrixAHeight, model.Scalar);
+            model.Matrix1 = matrixA.ToString();
+            model.Matrix2 = matrixB.ToString();
 
-            return Content($"{result}");
+            var sw = Stopwatch.StartNew();
+            var result = MatrixCalculator.MultiplyParallel(matrixA, matrixB);
+            sw.Stop();
+
+            var mdl = new MatrixModel
+            {
+                MatrixA = matrixA.ToString(';'),
+                MatrixB = matrixB.ToString(';'),
+                Result = result.ToString(),
+                Duration = sw.Elapsed
+            };
+
+            return View("Index", mdl);
+        }
+
+        [HttpPost]
+        public IActionResult Calculate(MatrixModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            if (!Matrix.TryParse(model.MatrixA, out var matrixA)
+                || !Matrix.TryParse(model.MatrixB, out var matrixB))
+            {
+                return View("Index", model);
+            }
+
+            var sw = Stopwatch.StartNew();
+            var result = MatrixCalculator.MultiplyParallel(matrixA, matrixB);
+            sw.Stop();
+
+            model.Result = result.ToString();
+            model.Duration = sw.Elapsed;
+
+            return View("Index", model);
+        }
+
+        [HttpPost]
+        public IActionResult CalculateSerial(MatrixModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("IndexSerial", model);
+            }
+
+            if (!Matrix.TryParse(model.MatrixA, out var matrixA)
+                || !Matrix.TryParse(model.MatrixB, out var matrixB))
+            {
+                return View("IndexSerial", model);
+            }
+
+            var sw = Stopwatch.StartNew();
+            var result = MatrixCalculator.Multiply(matrixA, matrixB);
+            sw.Stop();
+
+            model.Result = result.ToString();
+            model.Duration = sw.Elapsed;
+
+            return View("IndexSerial", model);
         }
 
         public IActionResult Error()

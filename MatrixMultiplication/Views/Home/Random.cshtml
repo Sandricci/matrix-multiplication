@@ -1,0 +1,73 @@
+﻿@model MatrixMultiplication.Models.MatrixRandomModel
+
+<div class="container">
+    <h1>Matrix multiplication</h1>
+    
+    @using (Html.BeginForm("CalculateRandom", "Home", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.MatrixAWidth)
+            @Html.EditorFor(m => m.MatrixAWidth)
+            @Html.ValidationMessageFor(m => m.MatrixAWidth)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MatrixAHeight)
+            @Html.EditorFor(m => m.MatrixAHeight)
+            @Html.ValidationMessageFor(m => m.MatrixAHeight)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MatrixBWidth)
+            @Html.EditorFor(m => m.MatrixBWidth)
+            @Html.ValidationMessageFor(m => m.MatrixBWidth)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MatrixBHeight)
+            @Html.EditorFor(m => m.MatrixBHeight)
+            @Html.ValidationMessageFor(m => m.MatrixBHeight)
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Scalar)
+            @Html.EditorFor(m => m.Scalar)
+            @Html.ValidationMessageFor(m => m.Scalar)
+        </div>
+
+        if (Model.Matrix1 != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Matrix1)
+                <textarea name="Result" rows="8" class="form-control" readonly>@Model.Matrix1</textarea>
+            </div>
+        }
+
+        if (Model.Matrix2 != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Matrix2)
+                <textarea name="Result" rows="8" class="form-control" readonly>@Model.Matrix2</textarea>
+            </div>
+        }
+
+        if (Model.Result != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Result)
+                <textarea name="Result" rows="8" class="form-control" readonly>@Model.Result</textarea>
+            </div>
+        }
+
+        if (Model.Duration != null)
+        {
+            <div class="form-group">
+                Calculation took @Model.Duration?.TotalMilliseconds ms
+            </div>
+        }
+
+            <div class="form-group">
+                <button type="submit" class="form-control btn btn-primary">Calculate in parallel</button>
+            </div>
+    }
+</div>

@@ -6,11 +6,38 @@
         Example input: 123;456;789<br />
         Please use semicolon separated values - they define the rows of your matrix.
     </p>
-    <form asp-action="Index" asp-controller="Home">
-        <label asp-for="MatrixA"></label>
-        <input asp-for="MatrixA" placeholder="Matrix A goes here" />
-        <label asp-for="MatrixB"></label>
-        <input asp-for="MatrixB" placeholder="Matrix B goes here" />
-        <input type="submit" />
-    </form>
+    
+    @using (Html.BeginForm("Calculate", "Home", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.MatrixA)
+            @Html.TextAreaFor(m => m.MatrixA, htmlAttributes: new { @class="form-control", rows = 8 })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.MatrixB)
+            @Html.TextAreaFor(m => m.MatrixB, htmlAttributes: new { @class = "form-control", rows = 8 })
+        </div>
+
+        if (Model.Result != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(m => m.Result)
+                <textarea name="Result" rows="8" class="form-control" readonly>@Model.Result</textarea>
+            </div>
+        }
+
+        if (Model.Duration != null)
+        {
+            <div class="form-group">
+                Calculation took @Model.Duration?.TotalMilliseconds ms
+            </div>
+        }
+
+            <div class="form-group">
+                <button type="submit" class="form-control btn btn-primary">Calculate in parallel</button>
+                @Html.ActionLink("Calculate serially", "IndexSerial", "Home", htmlAttributes: new { @class = "btn btn-default" })
+                @Html.ActionLink("Calculate a random matrix", "Random", "Home", htmlAttributes: new { @class = "btn btn-default" })
+            </div>
+    }
 </div>
