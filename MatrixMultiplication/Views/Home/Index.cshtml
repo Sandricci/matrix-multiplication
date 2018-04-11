@@ -3,8 +3,7 @@
 <div class="container">
     <h1>Matrix multiplication</h1>
     <p>
-        Example input: 123;456;789<br />
-        Please use semicolon separated values - they define the rows of your matrix.
+        Please use semicolon separated values.
     </p>
     
     @using (Html.BeginForm("Calculate", "Home", FormMethod.Post))
@@ -34,7 +33,7 @@
             </div>
         }
 
-            <div class="form-group">
+            <div class="form-group button-wrapper" role="group">
                 <button type="submit" class="form-control btn btn-primary">Calculate in parallel</button>
                 @Html.ActionLink("Calculate serially", "IndexSerial", "Home", htmlAttributes: new { @class = "btn btn-default" })
                 @Html.ActionLink("Calculate a random matrix", "Random", "Home", htmlAttributes: new { @class = "btn btn-default" })
